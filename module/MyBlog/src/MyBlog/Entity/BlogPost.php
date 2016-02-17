@@ -141,8 +141,8 @@ class BlogPost{
 	*
 	* @return void
 	*/
-	public function $setCreated($created){
-		$this->created = $created
+	public function setCreated($created){
+		$this->created = $created;
 	}
 	
 	/**
@@ -170,11 +170,13 @@ class BlogPost{
 	* Helper function
 	* 
 	*/	
-	public function exchangeArray($data)	{
-		foreach($data as $key => $val){
-			if(property_exist)
-		}
-	}
+	public function exchangeArray($data){
+        foreach ($data as $key => $val) {
+            if (property_exists($this, $key)) {
+                $this->$key = ($val !== null) ? $val : null;
+            }
+        }
+    }
 	
 	
 }
