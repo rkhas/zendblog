@@ -61,7 +61,7 @@ class BlogController extends AbstractActionController{
 	
 	public function addAction(){
 		$form = new \MyBlog\Form\BlogPostForm();
-		$form->get('submit')->setValue('Add');
+		$form->get('submit')->setValue('Добавить');
 		
 		$request = $this->getRequest();
 		if($request->isPost){
