@@ -22,10 +22,10 @@ class BlogController extends AbstractActionController
     }
     public function viewAction()
     {
-        // Check if id and blogpost exists.
+
         $id = (int) $this->params()->fromRoute('id', 0);
         if (!$id) {
-            $this->flashMessenger()->addErrorMessage('Blogpost id doesn\'t set');
+            $this->flashMessenger()->addErrorMessage('Пост не найден');
             return $this->redirect()->toRoute('blog');
         }
         $objectManager = $this->getServiceLocator()->get('Doctrine\ORM\EntityManager');
@@ -33,10 +33,10 @@ class BlogController extends AbstractActionController
             ->getRepository('\MyBlog\Entity\BlogPost')
             ->findOneBy(array('id' => $id));
         if (!$post) {
-            $this->flashMessenger()->addErrorMessage(sprintf('Blogpost with id %s doesn\'t exists', $id));
+            $this->flashMessenger()->addErrorMessage(sprintf('Пост с id %s не найден', $id));
             return $this->redirect()->toRoute('blog');
         }
-        // Render template.
+
         $view = new ViewModel(array(
             'post' => $post->getArrayCopy(),
         ));
@@ -59,7 +59,7 @@ class BlogController extends AbstractActionController
                 $objectManager->flush();
                 $message = 'Пост сохранен!';
                 $this->flashMessenger()->addMessage($message);
-                // Redirect to list of blogposts
+  
                 return $this->redirect()->toRoute('blog');
             }
             else {
@@ -88,7 +88,6 @@ class BlogController extends AbstractActionController
                 $this->flashMessenger()->addErrorMessage(sprintf('Пост с id %s не существует', $id));
                 return $this->redirect()->toRoute('blog');
             }
-            // Fill form data.
             $form->bind($post);
             return array('form' => $form);
         }
@@ -111,7 +110,7 @@ class BlogController extends AbstractActionController
                 $objectManager->flush();
                 $message = 'Пост сохранен!';
                 $this->flashMessenger()->addMessage($message);
-                // Redirect to list of blogposts
+                
                 return $this->redirect()->toRoute('blog');
             }
             else {

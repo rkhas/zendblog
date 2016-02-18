@@ -47,7 +47,7 @@ class BlogPostForm extends Form
             'name' => 'submit',
             'type' => 'Submit',
             'attributes' => array(
-                'value' => 'Save',
+                'value' => 'Сохранить',
                 'id' => 'submitbutton',
             ),
         ));
