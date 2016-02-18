@@ -45,7 +45,7 @@ class BlogController extends AbstractActionController
     public function addAction()
     {
         $form = new \MyBlog\Form\BlogPostForm();
-        $form->get('submit')->setValue('Add');
+        $form->get('submit')->setValue('Сохранить');
         $request = $this->getRequest();
         if ($request->isPost()) {
             $form->setData($request->getPost());
@@ -57,7 +57,7 @@ class BlogController extends AbstractActionController
                 $blogpost->setUserId(0);
                 $objectManager->persist($blogpost);
                 $objectManager->flush();
-                $message = 'Blogpost succesfully saved!';
+                $message = 'Пост сохранен!';
                 $this->flashMessenger()->addMessage($message);
                 // Redirect to list of blogposts
                 return $this->redirect()->toRoute('blog');
@@ -69,17 +69,15 @@ class BlogController extends AbstractActionController
         }
         return array('form' => $form);
     }
-    public function editAction()
-    {
-        // Create form.
+    
+	public function editAction(){
         $form = new \MyBlog\Form\BlogPostForm();
-        $form->get('submit')->setValue('Save');
+        $form->get('submit')->setValue('Сохранить');
         $request = $this->getRequest();
         if (!$request->isPost()) {
-            // Check if id and blogpost exists.
             $id = (int) $this->params()->fromRoute('id', 0);
             if (!$id) {
-                $this->flashMessenger()->addErrorMessage('Blogpost id doesn\'t set');
+                $this->flashMessenger()->addErrorMessage('Пост не существует');
                 return $this->redirect()->toRoute('blog');
             }
             $objectManager = $this->getServiceLocator()->get('Doctrine\ORM\EntityManager');
@@ -87,7 +85,7 @@ class BlogController extends AbstractActionController
                 ->getRepository('\MyBlog\Entity\BlogPost')
                 ->findOneBy(array('id' => $id));
             if (!$post) {
-                $this->flashMessenger()->addErrorMessage(sprintf('Blogpost with id %s doesn\'t exists', $id));
+                $this->flashMessenger()->addErrorMessage(sprintf('Пост с id %s не существует', $id));
                 return $this->redirect()->toRoute('blog');
             }
             // Fill form data.
@@ -111,13 +109,13 @@ class BlogController extends AbstractActionController
                 $blogpost->exchangeArray($form->getData());
                 $objectManager->persist($blogpost);
                 $objectManager->flush();
-                $message = 'Blogpost succesfully saved!';
+                $message = 'Пост сохранен!';
                 $this->flashMessenger()->addMessage($message);
                 // Redirect to list of blogposts
                 return $this->redirect()->toRoute('blog');
             }
             else {
-                $message = 'Error while saving blogpost';
+                $message = 'Ошибка при сохранении';
                 $this->flashMessenger()->addErrorMessage($message);
             }
         }
@@ -126,14 +124,14 @@ class BlogController extends AbstractActionController
     {
         $id = (int) $this->params()->fromRoute('id', 0);
         if (!$id) {
-            $this->flashMessenger()->addErrorMessage('Blogpost id doesn\'t set');
+            $this->flashMessenger()->addErrorMessage('Пост не найден');
             return $this->redirect()->toRoute('blog');
         }
         $objectManager = $this->getServiceLocator()->get('Doctrine\ORM\EntityManager');
         $request = $this->getRequest();
         if ($request->isPost()) {
-            $del = $request->getPost('del', 'No');
-            if ($del == 'Yes') {
+            $del = $request->getPost('del', 'Нет');
+            if ($del == 'Да') {
                 $id = (int) $request->getPost('id');
                 try {
                     $blogpost = $objectManager->find('MyBlog\Entity\BlogPost', $id);

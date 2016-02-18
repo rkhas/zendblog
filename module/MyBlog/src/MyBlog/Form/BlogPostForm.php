@@ -39,6 +39,9 @@ class BlogPostForm extends Form
         $this->add(array(
             'name' => 'state',
             'type' => 'Checkbox',
+			'options' => array(
+				'label' => 'Опубликовать'
+			)
         ));
         $this->add(array(
             'name' => 'submit',
