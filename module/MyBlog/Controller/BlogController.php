@@ -7,7 +7,17 @@ class BlogController extends AbstractActionController
 {
     public function indexAction()
     {
-        return new ViewModel();
+        $objectManager = $this->getServiceLocator()->get('Doctrine\ORM\EntityManager');
+
+		$posts = $objectManager
+			->getRepository('\MyBlog\Entity\BlogPost')
+			->findBy(array('state' => 1), array('created' => 'DESC'));
+
+		$view = new ViewModel(array(
+			'posts' => $posts,
+		));
+
+		return $view;
     }
     public function addAction()
     {
@@ -36,4 +46,28 @@ class BlogController extends AbstractActionController
         }
         return array('form' => $form);
     }
+	
+	public function viewAction()
+    {
+        // Check if id and blogpost exists.
+        $id = (int) $this->params()->fromRoute('id', 0);
+        if (!$id) {
+            $this->flashMessenger()->addErrorMessage('Blogpost id doesn\'t set');
+            return $this->redirect()->toRoute('blog');
+        }
+        $objectManager = $this->getServiceLocator()->get('Doctrine\ORM\EntityManager');
+        $post = $objectManager
+            ->getRepository('\MyBlog\Entity\BlogPost')
+            ->findOneBy(array('id' => $id));
+        if (!$post) {
+            $this->flashMessenger()->addErrorMessage(sprintf('Blogpost with id %s doesn\'t exists', $id));
+            return $this->redirect()->toRoute('blog');
+        }
+        // Render template.
+        $view = new ViewModel(array(
+            'post' => $post->getArrayCopy(),
+        ));
+        return $view;
+    }
+	
 }

@@ -22,7 +22,7 @@ class BlogPostForm extends Form
             'name' => 'title',
             'type' => 'Text',
             'options' => array(
-                'label' => 'Title',
+                'label' => 'Заголовок',
             ),
             'options' => array(
                 'min' => 3,
@@ -33,7 +33,7 @@ class BlogPostForm extends Form
             'name' => 'text',
             'type' => 'Textarea',
             'options' => array(
-                'label' => 'Text',
+                'label' => 'Текст',
             ),
         ));
         $this->add(array(
