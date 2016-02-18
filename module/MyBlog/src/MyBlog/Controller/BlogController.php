@@ -141,12 +141,12 @@ class BlogController extends AbstractActionController
                     $objectManager->flush();
                 }
                 catch (\Exception $ex) {
-                    $this->flashMessenger()->addErrorMessage('Error while deleting data');
+                    $this->flashMessenger()->addErrorMessage('Ошибка удаления поста');
                     return $this->redirect()->toRoute('blog', array(
                         'action' => 'index'
                     ));
                 }
-                $this->flashMessenger()->addMessage(sprintf('Blogpost %d was succesfully deleted', $id));
+                $this->flashMessenger()->addMessage(sprintf('Пост %d удален', $id));
             }
             return $this->redirect()->toRoute('blog');
         }
